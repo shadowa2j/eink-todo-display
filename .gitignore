@@ -1,0 +1,42 @@
+# Credentials (NEVER commit these!)
+credentials.json
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+dist/
+build/
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Waveshare e-Paper library (downloaded by setup script)
+e-Paper/
+lib/
+pic/
+
+# Generated files
+todo_preview.png
+log.txt
+*.log
+
+# Backup files
+*.bak
+*.backup
