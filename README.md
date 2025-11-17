@@ -33,7 +33,7 @@ Display your Google Sheets to-do list on a Waveshare 7.5" e-ink display connecte
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/shadowa2j/eink-todo-display.git
+git clone https://github.com/YOUR_USERNAME/eink-todo-display.git
 cd eink-todo-display
 ```
 
@@ -204,7 +204,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 - 📖 Full documentation: [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)
-- 🐛 Issues: [GitHub Issues](https://github.com/shadowa2j/eink-todo-display/issues)
+- 🐛 Issues: [GitHub Issues](https://github.com/YOUR_USERNAME/eink-todo-display/issues)
 - 💬 Questions: Open a discussion or issue
 
 ## Author

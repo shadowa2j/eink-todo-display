@@ -6,11 +6,11 @@ Quick guide for setting up this project from GitHub.
 
 ```bash
 # Via HTTPS
-git clone https://github.com/shadowa2j/eink-todo-display.git
+git clone https://github.com/YOUR_USERNAME/eink-todo-display.git
 cd eink-todo-display
 
 # Or via SSH
-git clone git@github.com:shadowa2j/eink-todo-display.git
+git clone git@github.com:YOUR_USERNAME/eink-todo-display.git
 cd eink-todo-display
 ```
 
@@ -22,14 +22,14 @@ cd eink-todo-display
 ssh pi@raspberrypi.local
 
 # Clone directly
-git clone https://github.com/shadowa2j/eink-todo-display.git
+git clone https://github.com/YOUR_USERNAME/eink-todo-display.git
 cd eink-todo-display
 ```
 
 ### Option B: Clone Locally, Then Copy
 ```bash
 # Clone on your computer
-git clone https://github.com/shadowa2j/eink-todo-display.git
+git clone https://github.com/YOUR_USERNAME/eink-todo-display.git
 
 # Copy to Pi via SCP
 scp -r eink-todo-display pi@raspberrypi.local:~/
@@ -69,4 +69,4 @@ git pull origin main
 - 📖 Full documentation: [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)
 - 🚀 Quick start: [START_HERE.md](START_HERE.md)
 - ✅ Pre-flight: [CHECKLIST.md](CHECKLIST.md)
-- 🐛 Issues: [Open an issue](https://github.com/shadowa2j/eink-todo-display/issues)
+- 🐛 Issues: [Open an issue](https://github.com/YOUR_USERNAME/eink-todo-display/issues)

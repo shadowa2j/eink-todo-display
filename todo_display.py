@@ -11,6 +11,11 @@ import gspread
 from google.oauth2.service_account import Credentials
 from datetime import datetime
 
+# ============================================
+# CONFIGURATION
+# ============================================
+ORIENTATION = 'portrait'  # Options: 'portrait' or 'landscape'
+
 # Add the Waveshare library path
 picdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'pic')
 libdir = os.path.join(os.path.dirname(os.path.realpath(__file__)), 'lib')
@@ -54,19 +59,32 @@ def get_tasks_from_sheet(credentials_file, sheet_name):
         print(f"Error reading from Google Sheets: {e}")
         return []
 
-def create_todo_image(tasks, width=800, height=480):
+def create_todo_image(tasks, width=800, height=480, orientation='landscape'):
     """
     Create an image with the to-do list
+    Supports both portrait and landscape orientations
     """
     # Create a new image with white background
     image = Image.new('1', (width, height), 255)  # '1' for 1-bit pixels, white
     draw = ImageDraw.Draw(image)
     
+    # Adjust font sizes based on orientation
+    if orientation == 'portrait':
+        title_size = 28
+        task_size = 20
+        small_size = 14
+        line_height = 35
+    else:  # landscape
+        title_size = 36
+        task_size = 24
+        small_size = 16
+        line_height = 40
+    
     # Try to load fonts
     try:
-        title_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', 36)
-        task_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 24)
-        small_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', 16)
+        title_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans-Bold.ttf', title_size)
+        task_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', task_size)
+        small_font = ImageFont.truetype('/usr/share/fonts/truetype/dejavu/DejaVuSans.ttf', small_size)
     except:
         title_font = ImageFont.load_default()
         task_font = ImageFont.load_default()
@@ -74,19 +92,20 @@ def create_todo_image(tasks, width=800, height=480):
     
     # Draw title
     title = "TO-DO LIST"
-    draw.text((20, 20), title, font=title_font, fill=0)
+    draw.text((20, 15), title, font=title_font, fill=0)
     
     # Draw line under title
-    draw.line((20, 70, width-20, 70), fill=0, width=2)
+    title_line_y = 55 if orientation == 'portrait' else 70
+    draw.line((20, title_line_y, width-20, title_line_y), fill=0, width=2)
     
     # Draw timestamp
     timestamp = datetime.now().strftime("%b %d, %Y %I:%M %p")
-    draw.text((20, 80), f"Updated: {timestamp}", font=small_font, fill=0)
+    timestamp_y = title_line_y + 10
+    draw.text((20, timestamp_y), f"Updated: {timestamp}", font=small_font, fill=0)
     
     # Draw tasks
-    y_position = 120
-    line_height = 40
-    max_tasks = (height - y_position - 20) // line_height
+    y_position = timestamp_y + 35
+    max_tasks = (height - y_position - 30) // line_height
     
     if not tasks:
         draw.text((20, y_position), "No tasks found", font=task_font, fill=0)
@@ -96,7 +115,7 @@ def create_todo_image(tasks, width=800, height=480):
             x_pos = 20
             
             # Draw checkbox
-            box_size = 20
+            box_size = 18 if orientation == 'portrait' else 20
             draw.rectangle([x_pos, y_position, x_pos + box_size, y_position + box_size], 
                           outline=0, width=2)
             
@@ -108,7 +127,7 @@ def create_todo_image(tasks, width=800, height=480):
                          fill=0, width=2)
             
             # Draw task text
-            text_x = x_pos + box_size + 15
+            text_x = x_pos + box_size + 12
             draw.text((text_x, y_position), task_text, font=task_font, fill=0)
             
             # Draw strikethrough if completed
@@ -116,7 +135,7 @@ def create_todo_image(tasks, width=800, height=480):
                 # Get text width for strikethrough line
                 bbox = draw.textbbox((text_x, y_position), task_text, font=task_font)
                 text_width = bbox[2] - bbox[0]
-                strike_y = y_position + 12
+                strike_y = y_position + (10 if orientation == 'portrait' else 12)
                 draw.line([text_x, strike_y, text_x + text_width, strike_y], 
                          fill=0, width=2)
             
@@ -124,7 +143,7 @@ def create_todo_image(tasks, width=800, height=480):
     
     # Draw footer
     footer_text = f"Total tasks: {len(tasks)}"
-    draw.text((20, height - 30), footer_text, font=small_font, fill=0)
+    draw.text((20, height - 25), footer_text, font=small_font, fill=0)
     
     return image
 
@@ -170,9 +189,15 @@ def main():
     CREDENTIALS_FILE = 'credentials.json'
     SHEET_NAME = 'My To-Do List'  # Change this to your Google Sheet name
     
-    # Display dimensions (default for 7.5" displays)
-    WIDTH = 800
-    HEIGHT = 480
+    # Display dimensions based on orientation
+    if ORIENTATION == 'portrait':
+        WIDTH = 480
+        HEIGHT = 800
+        print(f"Display mode: Portrait ({WIDTH}x{HEIGHT})")
+    else:  # landscape
+        WIDTH = 800
+        HEIGHT = 480
+        print(f"Display mode: Landscape ({WIDTH}x{HEIGHT})")
     
     # Check if credentials file exists
     if not os.path.exists(CREDENTIALS_FILE):
@@ -186,9 +211,18 @@ def main():
     print(f"Found {len(tasks)} tasks")
     
     print("Creating image...")
-    image = create_todo_image(tasks, WIDTH, HEIGHT)
+    image = create_todo_image(tasks, WIDTH, HEIGHT, ORIENTATION)
+    
+    # Rotate image if needed for display orientation
+    if ORIENTATION == 'portrait':
+        image = image.rotate(90, expand=True)  # Rotate 90 degrees for portrait
     
     # Save image for debugging
+    image.save('todo_preview.png')
+    print("Preview saved as todo_preview.png")
+    
+    # Display on e-ink
+    display_image_on_epd(image)
     image.save('todo_preview.png')
     print("Preview saved as todo_preview.png")
     

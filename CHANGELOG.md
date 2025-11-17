@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.1.0] - 2025-11-17
+
+### Added
+- Portrait orientation support (now default)
+- Configuration option to easily switch between portrait and landscape
+- Automatic font size adjustment based on orientation
+- Smaller, more compact title in portrait mode
+- More tasks visible in portrait mode (~18-20 vs 8-10)
+
+### Changed
+- Default orientation changed from landscape to portrait
+- Title font size reduced to 28pt in portrait mode (was 36pt)
+- Task font size adjusted to 20pt in portrait mode (was 24pt)
+- Line height optimized for each orientation
+- Display now rotates 90° automatically for portrait mode
+
+### Configuration
+- Set `ORIENTATION = 'portrait'` or `'landscape'` at top of todo_display.py
+- All layout parameters auto-adjust based on orientation
+
 ## [1.0.0] - 2025-11-16
 
 ### Added
@@ -47,4 +67,5 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
+- **1.1.0** (2025-11-17): Portrait mode support, configurable orientation
 - **1.0.0** (2025-11-16): Initial public release
