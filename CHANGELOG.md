@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.2.0] - 2025-11-17
+
+### Added
+- Dual list support - display two people's to-do lists on one screen
+- Equal vertical space for each person's list
+- Per-person task counts in footer
+- "No tasks" message when a person has no tasks
+- Person column support in Google Sheet (Task | Status | Person)
+
+### Changed
+- Google Sheet now requires three columns: Task, Status, Person
+- Title changed from "TO-DO LIST" to "TO-DO LISTS"
+- Each person gets their own section header (e.g., "Bryan's List")
+- Footer now shows breakdown by person
+
+### Configuration
+- Set `PERSON_1 = 'Bryan'` and `PERSON_2 = 'Stacy'` at top of todo_display.py
+- Names are case-sensitive and must match Google Sheet exactly
+
 ## [1.1.0] - 2025-11-17
 
 ### Added
@@ -67,5 +86,6 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## Version History
 
+- **1.2.0** (2025-11-17): Dual list support (Bryan & Stacy)
 - **1.1.0** (2025-11-17): Portrait mode support, configurable orientation
 - **1.0.0** (2025-11-16): Initial public release
