@@ -1,6 +1,6 @@
 # E-Ink To-Do List Display
 
-Display your Google Sheets to-do list on a Waveshare 7.5" e-ink display connected to a Raspberry Pi.
+Display your Google Sheets to-do list on a Waveshare 7.5" e-ink display connected to a Raspberry Pi. Supports dual lists for two people!
 
 ![E-Ink Display](https://img.shields.io/badge/Display-Waveshare%207.5%22-blue)
 ![Platform](https://img.shields.io/badge/Platform-Raspberry%20Pi%204-red)
@@ -9,8 +9,10 @@ Display your Google Sheets to-do list on a Waveshare 7.5" e-ink display connecte
 
 ## Features
 
+- ✅ **Dual Lists** - Display two people's to-do lists (Bryan & Stacy) with equal space
 - ✅ **Sync with Google Sheets** - Edit your to-do list from any device
 - ✅ **Auto-update** - Refreshes every hour automatically
+- ✅ **Portrait Mode** - Optimized vertical layout showing more tasks
 - ✅ **Visual feedback** - Checkboxes and strikethrough for completed tasks
 - ✅ **Low power** - E-ink display uses power only during updates
 - ✅ **Easy setup** - Automated installation script included
@@ -33,7 +35,7 @@ Display your Google Sheets to-do list on a Waveshare 7.5" e-ink display connecte
 ### 1. Clone the Repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/eink-todo-display.git
+git clone https://github.com/shadowa2j/eink-todo-display.git
 cd eink-todo-display
 ```
 
@@ -58,16 +60,42 @@ python3 todo_display.py
 
 ## Google Sheet Format
 
-Create a Google Sheet with two columns:
+Create a Google Sheet with three columns:
 
-| Task              | Status |
-|-------------------|--------|
-| Buy groceries     |        |
-| Call dentist      | done   |
-| Fix bike tire     |        |
+| Task              | Status | Person |
+|-------------------|--------|--------|
+| Buy groceries     |        | Bryan  |
+| Call dentist      | done   | Stacy  |
+| Fix bike tire     |        | Bryan  |
+| Schedule meeting  |        | Stacy  |
 
 - **Task**: Your task description
 - **Status**: Leave empty for active tasks, type `done` for completed
+- **Person**: Name of person (must match exactly: `Bryan` or `Stacy`)
+
+## Display Preview
+
+```
+┌──────────────────────────────┐
+│ TO-DO LISTS        Nov 17    │
+│──────────────────────────────│
+│ Bryan's List                 │
+│ ────────────────────────     │
+│ ☐ Buy groceries              │
+│ ☑ Fix bike tire              │
+│ ☐ Call mechanic              │
+│ ...                          │
+│──────────────────────────────│
+│ Stacy's List                 │
+│ ────────────────────────     │
+│ ☐ Schedule meeting           │
+│ ☑ Call dentist               │
+│ ☐ Pick up dry cleaning       │
+│ ...                          │
+│──────────────────────────────│
+│ Total: 6 (Bryan: 3, Stacy: 3)│
+└──────────────────────────────┘
+```
 
 ## Installation
 
@@ -94,13 +122,15 @@ See [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md) for detailed manual installat
 Edit `todo_display.py` to customize:
 
 ```python
-# Line 161: Change your Google Sheet name
-SHEET_NAME = 'My To-Do List'
+# Orientation: 'portrait' or 'landscape'
+ORIENTATION = 'portrait'
 
-# Lines 73-75: Adjust font sizes
-title_font = ImageFont.truetype('...', 36)  # Title size
-task_font = ImageFont.truetype('...', 24)   # Task text size
-small_font = ImageFont.truetype('...', 16)  # Footer size
+# Names for the two lists (case-sensitive!)
+PERSON_1 = 'Bryan'  # Top half of display
+PERSON_2 = 'Stacy'  # Bottom half of display
+
+# Google Sheet name
+SHEET_NAME = 'My To-Do List'
 ```
 
 ## Automatic Updates
@@ -130,7 +160,7 @@ eink-todo-display/
 ├── setup.sh                    # Installation script
 ├── requirements.txt            # Python dependencies
 ├── GOOGLE_SHEET_TEMPLATE.md    # Sheet format guide
-└── FIXES_SUMMARY.md           # Changelog
+└── CHANGELOG.md                # Version history
 ```
 
 ## Troubleshooting
@@ -149,6 +179,10 @@ eink-todo-display/
 **"Permission denied" when accessing sheet**
 - Share Google Sheet with service account email
 - Email is found in `credentials.json` under `client_email`
+
+**Tasks not showing up**
+- Make sure Person column matches exactly (`Bryan` not `bryan`)
+- Names are case-sensitive
 
 **Module import errors**
 - Run `./setup.sh` to install dependencies
@@ -170,23 +204,13 @@ This will verify:
 - ✓ Sheet can be accessed
 - ✓ Data can be read
 
-## Display Preview
+## Version History
 
-```
-╔════════════════════════════════════════╗
-║ TO-DO LIST                             ║
-║ ────────────────────────────────────── ║
-║ Updated: Nov 16, 2025 2:30 PM         ║
-║                                        ║
-║ ☐ Buy groceries                        ║
-║ ☑ Call dentist                         ║
-║ ☐ Fix bike tire                        ║
-║ ☑ Pay electric bill                    ║
-║ ☐ Schedule meeting                     ║
-║                                        ║
-║ Total tasks: 5                         ║
-╚════════════════════════════════════════╝
-```
+- **v1.2.0** - Dual list support (Bryan & Stacy)
+- **v1.1.0** - Portrait mode, configurable orientation
+- **v1.0.0** - Initial release
+
+See [CHANGELOG.md](CHANGELOG.md) for full details.
 
 ## Contributing
 
@@ -204,7 +228,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## Support
 
 - 📖 Full documentation: [SETUP_INSTRUCTIONS.md](SETUP_INSTRUCTIONS.md)
-- 🐛 Issues: [GitHub Issues](https://github.com/YOUR_USERNAME/eink-todo-display/issues)
+- 🐛 Issues: [GitHub Issues](https://github.com/shadowa2j/eink-todo-display/issues)
 - 💬 Questions: Open a discussion or issue
 
 ## Author
